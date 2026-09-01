@@ -21,7 +21,8 @@ RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf 
 
 COPY . /var/www/html
 
-RUN chmod +x /var/www/html/startup.sh
+RUN chmod +x /var/www/html/startup.sh \
+    && sed -i 's/\r//' /var/www/html/startup.sh
 
 EXPOSE 80
 
