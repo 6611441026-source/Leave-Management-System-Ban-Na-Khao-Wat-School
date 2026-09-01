@@ -36,7 +36,8 @@ function loadDotEnv(string $path): void
         }
 
         // Only set if NOT already defined in the environment (Railway vars take priority)
-        if (getenv($key) === false && !isset($_ENV[$key])) {
+        $existing = getenv($key);
+        if (($existing === false || $existing === '') && !isset($_ENV[$key])) {
             putenv($key . '=' . $value);
             $_ENV[$key]    = $value;
             $_SERVER[$key] = $value;
