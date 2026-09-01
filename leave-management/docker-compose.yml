@@ -1,0 +1,64 @@
+services:
+  app:
+    build: .
+    container_name: leave-management-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8000:80"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: leave_management
+      DB_USER: leave_user
+      DB_PASS: leave_pass
+      DB_CHARSET: utf8mb4
+    volumes:
+      - .:/var/www/html
+    command: >
+      bash -c "
+        echo 'รอให้ MySQL พร้อม...';
+        sleep 3;
+        php /var/www/html/install_users.php;
+        apache2-foreground
+      "
+
+  mysql:
+    image: mysql:8.0
+    container_name: leave-management-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: leave_management
+      MYSQL_USER: leave_user
+      MYSQL_PASSWORD: leave_pass
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "leave_user", "-pleave_pass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: leave-management-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: rootpass
+
+volumes:
+  mysql_data:
