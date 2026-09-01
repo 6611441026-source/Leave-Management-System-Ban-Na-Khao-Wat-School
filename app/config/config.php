@@ -35,10 +35,12 @@ function loadDotEnv(string $path): void
             continue;
         }
 
-        // Override both process env and $_ENV to ensure .env values always win
-        putenv($key . '=' . $value);
-        $_ENV[$key]    = $value;
-        $_SERVER[$key] = $value;
+        // Only set if NOT already defined in the environment (Railway vars take priority)
+        if (getenv($key) === false && !isset($_ENV[$key])) {
+            putenv($key . '=' . $value);
+            $_ENV[$key]    = $value;
+            $_SERVER[$key] = $value;
+        }
     }
 }
 
