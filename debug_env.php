@@ -3,7 +3,7 @@
 // DELETE this file after debugging!
 header('Content-Type: text/plain');
 
-$keys = ['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASS', 'DB_CHARSET', 'PORT'];
+$keys = ['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASS', 'DB_CHARSET', 'PORT', 'MYSQL_URL', 'DATABASE_URL'];
 
 foreach ($keys as $key) {
     $fromGetenv = getenv($key);

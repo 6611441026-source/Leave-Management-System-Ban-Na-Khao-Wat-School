@@ -48,6 +48,21 @@ function loadDotEnv(string $path): void
 loadDotEnv(BASE_PATH . '/.env');
 
 // =========================================
+// Parse MYSQL_URL / DATABASE_URL if provided (Railway)
+// =========================================
+$mysqlUrl = getenv('MYSQL_URL') ?: getenv('DATABASE_URL') ?: ($_ENV['MYSQL_URL'] ?? $_ENV['DATABASE_URL'] ?? '');
+if (!empty($mysqlUrl)) {
+    $parsed = parse_url($mysqlUrl);
+    if ($parsed !== false) {
+        if (!empty($parsed['host']))     { putenv('DB_HOST=' . $parsed['host']); $_ENV['DB_HOST'] = $parsed['host']; }
+        if (!empty($parsed['port']))     { putenv('DB_PORT=' . $parsed['port']); $_ENV['DB_PORT'] = $parsed['port']; }
+        if (!empty($parsed['user']))     { putenv('DB_USER=' . $parsed['user']); $_ENV['DB_USER'] = $parsed['user']; }
+        if (!empty($parsed['pass']))     { putenv('DB_PASS=' . $parsed['pass']); $_ENV['DB_PASS'] = $parsed['pass']; }
+        if (!empty($parsed['path']))     { $db = ltrim($parsed['path'], '/'); putenv('DB_NAME=' . $db); $_ENV['DB_NAME'] = $db; }
+    }
+}
+
+// =========================================
 // Database Configuration
 // =========================================
 // ใช้ $_ENV แทน getenv() เพื่อให้ค่าจาก .env ชนะค่าใน process environment เดิม
