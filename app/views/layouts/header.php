@@ -37,8 +37,8 @@ $roleBadgeClass = ['admin' => 'bg-danger', 'executive' => 'bg-primary', 'personn
         <!-- ===== SIDEBAR ===== -->
         <nav id="sidebar" class="sidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <img src="<?= BASE_URL ?>public/assets/images/logo.png" alt="โลโก้โรงเรียน" class="sidebar-logo-img">
+                <div class="sidebar-logo" style="width:60px; height:60px; overflow:hidden; display:inline-flex; align-items:center; justify-content:center;">
+                    <img src="<?= BASE_URL ?>public/assets/images/logo.png" alt="โลโก้โรงเรียน" class="sidebar-logo-img" style="max-width:100%; max-height:100%; object-fit:contain;">
                 </div>
                 <h5><?= APP_NAME ?></h5>
                 <p><?= APP_SUBTITLE ?></p>

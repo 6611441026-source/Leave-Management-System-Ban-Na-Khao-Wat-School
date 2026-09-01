@@ -106,11 +106,15 @@ define('APP_NAME', 'ระบบบริหารจัดการการล
 define('APP_SUBTITLE', 'โรงเรียนบ้านหน้าเขาวัด');
 define('APP_VERSION', '1.0.0');
 
-// Auto-detect base URL
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+// Auto-detect base URL (handling SSL proxies like Railway)
+$isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+    || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')
+    || (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower($_SERVER['HTTP_X_FORWARDED_SSL']) === 'on');
+
+$protocol  = $isHttps ? 'https' : 'http';
+$host      = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
-$baseUrl = $protocol . '://' . $host . ($scriptDir === '/' ? '/' : $scriptDir . '/');
+$baseUrl   = $protocol . '://' . $host . ($scriptDir === '/' ? '/' : $scriptDir . '/');
 define('BASE_URL', $baseUrl);
 
 // =========================================
