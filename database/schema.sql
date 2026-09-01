@@ -7,12 +7,11 @@
 SET NAMES utf8mb4;
 SET CHARACTER SET utf8mb4;
 
--- สร้างฐานข้อมูล
-CREATE DATABASE IF NOT EXISTS leave_management
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
-
-USE leave_management;
+-- CREATE DATABASE IF NOT EXISTS leave_management
+--     CHARACTER SET utf8mb4
+--     COLLATE utf8mb4_unicode_ci;
+-- 
+-- USE leave_management;
 
 -- =========================================
 -- ลบตารางเดิม (ถ้ามี) ตามลำดับ FK
