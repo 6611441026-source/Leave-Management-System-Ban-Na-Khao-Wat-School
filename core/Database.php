@@ -29,7 +29,13 @@ class Database
         try {
             $this->pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
-            die('การเชื่อมต่อฐานข้อมูลล้มเหลว: ' . $e->getMessage());
+            http_response_code(503);
+            echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>ไม่สามารถเชื่อมต่อฐานข้อมูล</title></head><body>';
+            echo '<h2>⚠️ ไม่สามารถเชื่อมต่อฐานข้อมูลได้</h2>';
+            echo '<p>กรุณาตรวจสอบการตั้งค่า Database Environment Variables บน Railway</p>';
+            echo '<pre style="background:#f5f5f5;padding:10px">' . htmlspecialchars($e->getMessage()) . '</pre>';
+            echo '</body></html>';
+            exit(0);
         }
     }
 
